@@ -10,7 +10,7 @@
   
   <title>
     
-      learning AI together
+      About | learning AI together
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -191,43 +191,53 @@
   </div>
 </header>
 
-    <div id="article-banner">
-  <h2>Archives</h2>
-  <p class="post-date">Archives</p>
-</div>
-<main class="app-body" id="archives">
-  
-  
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2022
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2022/04/26/NumPy%20%E7%99%BE%E9%A2%98%E5%A4%A7%E5%86%B2%E5%85%B3%EF%BD%9C%E5%AD%A6%E4%B9%A0%E7%89%88/" class="archive-title">Blog模板 | NumPy 百题大冲关｜学习版</a>
-        <p class="archive-date">04-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2022/04/26/Git%20&amp;%20GitHub%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="archive-title">Git &amp; GitHub使用指南</a>
-        <p class="archive-date">04-26</p>
-      </div>
-    
+    <div id="about-banner" style="background-image: url()"></div>
+<div class="author">
+  <div class="head">
+    <img src="https://avatars.githubusercontent.com/u/96683392?s=64&amp;v=4" />
   </div>
-</section>
+  <h3>zhaixuetan</h3>
   
-</main>
+    <p class="description">Learning AI together with me.</p>
+  
+  <section class="share-icons">
+    
+    
+    
+      <a class="icon-github" href="https://github.com/learningaitogether" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    
+    
+    
+      <a class="icon-zhihu" href="https://www.zhihu.com/people/learningaitogether" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-stack-1x fa-inverse">知</i>
+        </span>
+      </a>
+    
+    
+  </section>
+</div>
 
 <script>
   (function () {
-    var url = 'http://example.com/archives/index.html';
-    $('#article-banner').geopattern(url);
-    $('.header').removeClass('fixed-header');
+    $('.header').removeClass('fixed-header')
+    var windowH = $(window).height();
+    var author = $('.author')
+    var bodyH = author.offset().top + author[0].offsetHeight + 71;
+    if (bodyH < windowH) {
+      author.css({
+        'margin-bottom': windowH - bodyH
+      })
+    }
   })();
 </script>
+
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
