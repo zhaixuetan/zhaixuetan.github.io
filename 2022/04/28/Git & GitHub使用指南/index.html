@@ -193,7 +193,7 @@
 
     <div id="article-banner">
   <h2>Git & GitHub使用指南</h2>
-  <p class="post-date">2022-04-26</p>
+  <p class="post-date">2022-04-28</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -236,7 +236,7 @@
 <p>cd 项目路径<br>如：D:\AI\03RNN\AI-Writer-project</p>
 <p><strong>7. 配置Git</strong></p>
 <p>git config –global user.name ‘sheldonyue’ </p>
-<p>git config –global user.email ‘<a href="mailto:&#x73;&#x68;&#101;&#x6c;&#x64;&#x6f;&#110;&#121;&#x75;&#x65;&#x40;&#x73;&#105;&#x6e;&#97;&#x2e;&#99;&#111;&#109;">&#x73;&#x68;&#101;&#x6c;&#x64;&#x6f;&#110;&#121;&#x75;&#x65;&#x40;&#x73;&#105;&#x6e;&#97;&#x2e;&#99;&#111;&#109;</a>‘</p>
+<p>git config –global user.email ‘<a href="mailto:&#115;&#104;&#101;&#108;&#x64;&#111;&#110;&#x79;&#x75;&#101;&#x40;&#115;&#x69;&#110;&#x61;&#46;&#x63;&#111;&#109;">&#115;&#104;&#101;&#108;&#x64;&#111;&#110;&#x79;&#x75;&#101;&#x40;&#115;&#x69;&#110;&#x61;&#46;&#x63;&#111;&#109;</a>‘</p>
 <p><strong>7. 检查配置</strong></p>
 <p>git config -l</p>
 <p>查看最后两行name 和 email</p>
@@ -255,6 +255,15 @@
 <p><strong>12. 推送到远端</strong></p>
 <p>git push -u origin master</p>
 <p>说明：推送小于100MB的项目</p>
+<p><strong>13. 报错解决</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解决OpenSSL SSL_read: Connection was reset, errno 10054问题</span></span><br><span class="line">git config http.postBuffer <span class="number">524288000</span></span><br></pre></td></tr></table></figure>
+
+
+<pre><code>  File &quot;C:\Users\pc\AppData\Local\Temp/ipykernel_22076/4154518859.py&quot;, line 2
+    git config http.postBuffer 524288000
+        ^
+SyntaxError: invalid syntax
+</code></pre>
 <hr>
 <h3 id="Git-LFS上传大文件"><a href="#Git-LFS上传大文件" class="headerlink" title="Git-LFS上传大文件"></a>Git-LFS上传大文件</h3><p><i class="fa fa-arrow-circle-down" aria-hidden="true"> 教学步骤</i>：</p>
 <p><strong>1. 下载文件</strong></p>
@@ -286,6 +295,94 @@
 <p><strong>4. 保存网站</strong></p>
 <p>点击commit changes</p>
 <hr>
+<h3 id="Github-Hexo制作博客"><a href="#Github-Hexo制作博客" class="headerlink" title="Github + Hexo制作博客"></a>Github + Hexo制作博客</h3><h4 id="Github-Hexo-安装部署"><a href="#Github-Hexo-安装部署" class="headerlink" title="Github + Hexo 安装部署"></a>Github + Hexo 安装部署</h4><p><strong>1. 下载安装node.js客户端</strong></p>
+<p><a target="_blank" rel="noopener" href="http://nodejs.cn/">http://nodejs.cn/</a> #下载地址</p>
+<p>npm –version #验证安装</p>
+<p><strong>2. 下载安装git客户端</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://gitforwindows.org/</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 注册Github账户</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/">https://github.com/</a> #下载地址</p>
+<p>git –version #验证安装</p>
+<p><strong>4. Git Bash设置git</strong></p>
+<p>git config –global user.name “你的GitHub用户名”   </p>
+<p>git config –global user.email “你的GitHub注册邮箱”</p>
+<p>ssh-keygen -t rsa -C “你的GitHub注册邮箱”</p>
+<p>ssh <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#98;&#46;&#x63;&#x6f;&#x6d;">&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#98;&#46;&#x63;&#x6f;&#x6d;</a> #获得密钥</p>
+<p>#配置Github keys</p>
+<p>#配置 Github tokens :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</p>
+<p><strong>5. CMD安装Hexo</strong></p>
+<p>1 安装hexo博客框架:  npm install -g hexo-cli</p>
+<p>如果报错,执行： npm install    /    npm install -g <a href="mailto:&#110;&#x70;&#x6d;&#x40;&#56;&#x2e;&#55;&#46;&#48;">&#110;&#x70;&#x6d;&#x40;&#56;&#x2e;&#55;&#46;&#48;</a></p>
+<p>2 本地部署hexo: hexo init</p>
+<ol start="3">
+<li>安装hexo-deployer-git插件:<br>npm install hexo-deployer-git –save</li>
+</ol>
+<p>修改_config.yml文档，type:git  repository:    branch:main</p>
+<ol start="4">
+<li><p>启动服务预览<br>hexo s == hexo server </p>
+</li>
+<li><p>部署到Github服务器<br>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="Github-Hexo更新blog"><a href="#Github-Hexo更新blog" class="headerlink" title="Github + Hexo更新blog"></a>Github + Hexo更新blog</h4><ol>
+<li><p>打开cmd 设置blog路径</p>
+</li>
+<li><p>启动服务预览<br>hexo s == hexo server </p>
+</li>
+<li><p>新建文章(我会用jupyter notebook生成md文档)<br>hexo n “文章名字” == hexo new “文章名字” </p>
+</li>
+<li><p>部署到Github服务器<br>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</p>
+<p> 注意：MarkDown的使用</p>
+</li>
+</ol>
+<h4 id="Github-Hexo更换主题"><a href="#Github-Hexo更换主题" class="headerlink" title="Github + Hexo更换主题"></a>Github + Hexo更换主题</h4><p><strong>1. 准备主题</strong></p>
+<p><a target="_blank" rel="noopener" href="https://hexo.io/themes/">https://hexo.io/themes/</a></p>
+<p><strong>2. 部署主题</strong></p>
+<ol>
+<li><p>cd your-hexo-folder #进入你的项目文件夹</p>
+</li>
+<li><p>git clone <a target="_blank" rel="noopener" href="https://github.com/yanm1ng/hexo-theme-vexo.git">https://github.com/yanm1ng/hexo-theme-vexo.git</a> themes/vexo</p>
+</li>
+<li><p>cp -R themes/vexo/_source/* source/</p>
+</li>
+<li><p>修改_config.yml文档，themes:mintin</p>
+</li>
+</ol>
+<h4 id="Github-Hexo增添新功能：统计访问量"><a href="#Github-Hexo增添新功能：统计访问量" class="headerlink" title="Github + Hexo增添新功能：统计访问量"></a>Github + Hexo增添新功能：统计访问量</h4><p><strong>1. 配置开启统计功能</strong></p>
+<p>#在themes/vexo/_config.yml添加属性</p>
+<p>#是否开启访问量统计功能(不蒜子)<br>busuanzi:<br> enable: true</p>
+<p><strong>2. 添加站点访问量</strong></p>
+<p>#在themes/yilia/layout/_partial/footer.ejs末尾添加如下代码</p>
+<p>
+<% if (theme.busuanzi && theme.busuanzi.enable){ %>
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <% } %>
+</p>
+
+<p><strong>3. 添加文章访问量</strong></p>
+<h4 id="Github-Hexo-Gitalk增添文章评论"><a href="#Github-Hexo-Gitalk增添文章评论" class="headerlink" title="Github + Hexo + Gitalk增添文章评论"></a>Github + Hexo + Gitalk增添文章评论</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**<span class="number">1.</span> 登录gitalk**</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://gitalk.github.io/</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**<span class="number">1.</span> 登录gitalk**</span><br></pre></td></tr></table></figure>
+
+<hr>
 <h3 id="Github-Gridea建设网站"><a href="#Github-Gridea建设网站" class="headerlink" title="Github+ Gridea建设网站"></a>Github+ Gridea建设网站</h3><p><strong>1. 下载Gridea客户端</strong></p>
 <p><a target="_blank" rel="noopener" href="https://gridea.dev/">https://gridea.dev/</a></p>
 <p><strong>2. 获取个人访问令牌</strong></p>
@@ -294,17 +391,6 @@
 <p><strong>3. Gridea与Github建立连接</strong></p>
 <p>点击远程， 输入Github域名， 仓库名称， 分支默认， Github用户名， Github用户名， Github邮箱</p>
 <p>保存， 检测远程连接， 成功后点击同步，检查Github仓库是否多出一些文件夹。</p>
-<p><strong>4. 美化网站</strong></p>
-<p>选择主题，网站相关信息更新</p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Fb4y1Y7e4/?spm_id_from=333.788.recommend_more_video.7">https://www.bilibili.com/video/BV1Fb4y1Y7e4/?spm_id_from=333.788.recommend_more_video.7</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.bilibili.com/video/BV1ME41147bv/?spm_id_from=<span class="number">333.788</span>.recommend_more_video.-<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="提高Github访问速度"><a href="#提高Github访问速度" class="headerlink" title="提高Github访问速度"></a>提高Github访问速度</h3><p><strong>1. 修改hosts</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Windows hosts目录：C:\windows\system32\drivers\etc\</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Github</span></span><br><span class="line"><span class="number">192.30</span><span class="number">.253</span><span class="number">.113</span> github.com</span><br><span class="line"><span class="number">151.101</span><span class="number">.185</span><span class="number">.194</span> github.<span class="keyword">global</span>.ssl.fastly.net</span><br><span class="line"><span class="number">203.98</span><span class="number">.7</span><span class="number">.65</span> gist.github.com</span><br><span class="line"><span class="number">13.229</span><span class="number">.189</span><span class="number">.0</span> codeload.github.com</span><br><span class="line"><span class="number">185.199</span><span class="number">.109</span><span class="number">.153</span> desktop.github.com </span><br><span class="line"><span class="number">185.199</span><span class="number">.108</span><span class="number">.153</span> guides.github.com  </span><br><span class="line"><span class="number">185.199</span><span class="number">.108</span><span class="number">.153</span> blog.github.com</span><br><span class="line"><span class="number">18.204</span><span class="number">.240</span><span class="number">.114</span> status.github.com</span><br><span class="line"><span class="number">185.199</span><span class="number">.108</span><span class="number">.153</span> developer.github.com</span><br><span class="line"><span class="number">185.199</span><span class="number">.108</span><span class="number">.153</span> services.github.com</span><br><span class="line"><span class="number">192.30</span><span class="number">.253</span><span class="number">.175</span> enterprise.github.com   </span><br><span class="line"><span class="number">34.195</span><span class="number">.49</span><span class="number">.195</span> education.github.com    </span><br><span class="line"><span class="number">185.199</span><span class="number">.108</span><span class="number">.153</span> pages.github.com  </span><br><span class="line"><span class="number">34.196</span><span class="number">.237</span><span class="number">.103</span> classroom.github.com</span><br></pre></td></tr></table></figure>
-
-<p><strong>2. 刷新DNS网页缓存</strong></p>
-<p>DNS网页缓存刷新CMD指令：ipconfig /flushdns</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.bilibili.com/video/BV1Fb4y1Y7e4/?spm_id_from=<span class="number">333.788</span>.recommend_more_video<span class="number">.7</span></span><br></pre></td></tr></table></figure>
 </section>
     <!-- Tags START -->
     
@@ -314,13 +400,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-    
-      <a class="nav-right" href="/2022/04/26/NumPy%20%E7%99%BE%E9%A2%98%E5%A4%A7%E5%86%B2%E5%85%B3%EF%BD%9C%E5%AD%A6%E4%B9%A0%E7%89%88/">
+      <a class="nav-left" href="/2022/04/28/%E7%BB%8F%E5%85%B8%E6%9D%A1%E4%BB%B6%E5%8F%8D%E5%B0%84%20%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91/">
+        <span class="nav-arrow">← </span>
         
-          Blog模板 | NumPy 百题大冲关｜学习版
+          经典条件反射 【RL强化学习】
         
-        <span class="nav-arrow"> →</span>
       </a>
+    
     
   </div>
 
@@ -372,7 +458,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Desk%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">Github Desk简单操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Git%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">Git简单操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Git-LFS%E4%B8%8A%E4%BC%A0%E5%A4%A7%E6%96%87%E4%BB%B6"><span class="toc-nav-text">Git-LFS上传大文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github%E8%8E%B7%E5%8F%96%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">Github获取开源项目</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Pages%E5%88%B6%E4%BD%9C%E7%BD%91%E7%AB%99"><span class="toc-nav-text">Github  Pages制作网站</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Gridea%E5%BB%BA%E8%AE%BE%E7%BD%91%E7%AB%99"><span class="toc-nav-text">Github+ Gridea建设网站</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8F%90%E9%AB%98Github%E8%AE%BF%E9%97%AE%E9%80%9F%E5%BA%A6"><span class="toc-nav-text">提高Github访问速度</span></a>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Desk%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">Github Desk简单操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Git%E7%AE%80%E5%8D%95%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">Git简单操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Git-LFS%E4%B8%8A%E4%BC%A0%E5%A4%A7%E6%96%87%E4%BB%B6"><span class="toc-nav-text">Git-LFS上传大文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github%E8%8E%B7%E5%8F%96%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">Github获取开源项目</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Pages%E5%88%B6%E4%BD%9C%E7%BD%91%E7%AB%99"><span class="toc-nav-text">Github  Pages制作网站</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Hexo%E5%88%B6%E4%BD%9C%E5%8D%9A%E5%AE%A2"><span class="toc-nav-text">Github + Hexo制作博客</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Github-Hexo-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="toc-nav-text">Github + Hexo 安装部署</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Github-Hexo%E6%9B%B4%E6%96%B0blog"><span class="toc-nav-text">Github + Hexo更新blog</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Github-Hexo%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98"><span class="toc-nav-text">Github + Hexo更换主题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Github-Hexo%E5%A2%9E%E6%B7%BB%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%9A%E7%BB%9F%E8%AE%A1%E8%AE%BF%E9%97%AE%E9%87%8F"><span class="toc-nav-text">Github + Hexo增添新功能：统计访问量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Github-Hexo-Gitalk%E5%A2%9E%E6%B7%BB%E6%96%87%E7%AB%A0%E8%AF%84%E8%AE%BA"><span class="toc-nav-text">Github + Hexo + Gitalk增添文章评论</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Github-Gridea%E5%BB%BA%E8%AE%BE%E7%BD%91%E7%AB%99"><span class="toc-nav-text">Github+ Gridea建设网站</span></a>
     
   </div>
 </aside>
@@ -382,7 +468,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2022/04/26/Git &amp; GitHub使用指南/';
+    var url = 'http://example.com/2022/04/28/Git &amp; GitHub使用指南/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
