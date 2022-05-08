@@ -10,7 +10,7 @@
   
   <title>
     
-      On-policy learning | learning AI together
+      Off-policy learning | learning AI together
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -180,8 +180,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>On-policy learning</h2>
-  <p class="post-date">2022-05-07</p>
+  <h2>Off-policy learning</h2>
+  <p class="post-date">2022-05-08</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -189,7 +189,9 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><div class="alert alert-info"><p>grid world with cliff：</p>
+    <section class="markdown-content"><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>问题：e-greedy总是走巾cliff的问题?</p>
+<p>off-policy: 学习中使用的策略和最后估算的策略不同（使用non-optimal policy, 估算 optimal policy），学一套 做一套</p>
+<div class="alert alert-info"><p>grid world with cliff：</p>
     
 <table>
 <thead>
@@ -234,19 +236,15 @@
 
 
 
-<p>问题： 给定策略 Π = a(s) ， 相对应的Q(s,a(s))=?</p>
-<p>on-policy: 学习过程中使用同样的策略a(s)</p>
-<p>off-policy: 学习中使用的策略和最后估算的策略不同（使用non-optimal policy, 估算 optimal policy）</p>
-<h4 id="ϵ-greedy"><a href="#ϵ-greedy" class="headerlink" title="ϵ-greedy"></a>ϵ-greedy</h4><p> ϵ-greedy(Epsilon Greedy): always exploit, sometimes explore</p>
-<p> exploit greedy(p=1-ε):   At = argmaxQt(a)</p>
-<p> explore(p=ε）: A_t = random(a)</p>
-<h4 id="On-policy-TD-Control"><a href="#On-policy-TD-Control" class="headerlink" title="On-policy TD Control"></a>On-policy TD Control</h4><p>不宜采用随机政策</p>
-<p>根据我的行动策略a(s), 这个状态有多好。</p>
-<p>TD algorithm的学习对象 ：V(s) -&gt; Q(s,a)</p>
+<h3 id="Q-Learning算法"><a href="#Q-Learning算法" class="headerlink" title="Q-Learning算法"></a>Q-Learning算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ϵ-greedy:</span></span><br><span class="line"><span class="comment"># ϵ-greedy(Epsilon Greedy): always exploit, sometimes explore</span></span><br><span class="line"><span class="comment">#exploit greedy(p=1-ε):   At = argmaxQt(a)</span></span><br><span class="line"><span class="comment">#explore(p=ε）: A_t = random(a)</span></span><br></pre></td></tr></table></figure>
+
+<p>强化学习算法：<img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.8CmfWt5hAikijKQclW9p_AHaDN?pid=ImgDet&rs=1" alt="avatar"></p>
 <p>TD learning:</p>
 <p>V(St)&lt;–V(St) + α[Rt+1 + γV(St+1)-V(St)]</p>
 <p>on policy TD COntrol(SARSA) :</p>
 <p>Q(St,At) &lt;– Q(St,At) + α[Rt+1 +γQ(St+1,At+1)-Q(St,At)]</p>
+<p>Off-policy TD COntrol(Q-learning):</p>
+<p>Q(St,At) &lt;– Q(St,At) + α[Rt+1 +γmaxQ(St+1,At+1)-Q(St,At)]</p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># environment: grids with size m*n; goal / cliff grid / start point(down left coner)</span></span><br><span class="line"><span class="comment"># task: can be temporal discounting R(R(goal)=0, R(cliff)=-100，R(orginary)=-1 )</span></span><br><span class="line"><span class="comment"># learning algorithm: SARSA</span></span><br></pre></td></tr></table></figure>
 
 
@@ -263,9 +261,10 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning setup</span></span><br><span class="line">A = <span class="number">.5</span> <span class="comment"># learning rate </span></span><br><span class="line">gamma = <span class="number">1</span> <span class="comment"># no temporal discount for future state</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">e_greedy</span>(<span class="params">state,Q</span>): <span class="comment">#e-greedy</span></span><br><span class="line"></span><br><span class="line">    e=<span class="number">0.1</span></span><br><span class="line">    <span class="keyword">if</span> np.random.rand(<span class="number">1</span>)&lt;e:</span><br><span class="line">        action = np.random.randint(<span class="built_in">len</span>(acts))</span><br><span class="line"> <span class="comment">#       print(&#x27;随机选择action:&#x27;,action)</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        Q_now = Q[state[<span class="number">0</span>]][state[<span class="number">1</span>]]</span><br><span class="line">        <span class="comment">#action = np.argmax(Q_now)</span></span><br><span class="line">        allmax = [i <span class="keyword">for</span> i,j <span class="keyword">in</span> <span class="built_in">enumerate</span>(Q_now) <span class="keyword">if</span> j == <span class="built_in">max</span>(Q_now)] <span class="comment"># find all actions of largest Qs</span></span><br><span class="line">        action = allmax[np.random.randint(<span class="built_in">len</span>(allmax))] <span class="comment"># randomly select one </span></span><br><span class="line">   <span class="comment">#     print(&quot;Q_now:&quot;,allmax,&quot;Q action:&quot;,action)</span></span><br><span class="line">    <span class="keyword">return</span> action</span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start learning</span></span><br><span class="line">Nepis = <span class="number">100</span> <span class="comment"># total episode num</span></span><br><span class="line">Q = np.zeros([gsize[<span class="number">0</span>],gsize[<span class="number">1</span>],<span class="built_in">len</span>(acts)]) <span class="comment">#Q(St,At)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(Nepis):</span><br><span class="line">    s=s0 <span class="comment"># initial point</span></span><br><span class="line">    nstep =<span class="number">0</span> </span><br><span class="line">    tot_r = <span class="number">0</span> </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> gw[s[<span class="number">0</span>],s[<span class="number">1</span>]] != <span class="number">1</span>:</span><br><span class="line">        a = e_greedy(s,Q) <span class="comment">#action      </span></span><br><span class="line">        s_new = state_act(s,a,gsize) <span class="comment"># current state</span></span><br><span class="line">        a_new = e_greedy(s_new,Q) <span class="comment"># use the same policy as current state</span></span><br><span class="line"></span><br><span class="line">        nstep = nstep + <span class="number">1</span> <span class="comment">#step</span></span><br><span class="line">        pred_err = reward(s,gw) + gamma*Q[s_new[<span class="number">0</span>],s_new[<span class="number">1</span>],a_new] - Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a]</span><br><span class="line">        tot_r = tot_r+reward(s,gw)</span><br><span class="line"></span><br><span class="line">        Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a] = Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a] + A * pred_err</span><br><span class="line">        s = s_new</span><br><span class="line">        <span class="keyword">if</span> a==<span class="number">0</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">0</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向UP移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">elif</span> a==<span class="number">1</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">1</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向DOWN移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">elif</span> a==<span class="number">2</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">2</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向LEFT移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">3</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向RIGHT移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">            </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;个Nepis,R值为：&#123;&#125;\n&quot;</span>.<span class="built_in">format</span>(k,tot_r),Q_steps)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start learning</span></span><br><span class="line">Nepis = <span class="number">200</span> <span class="comment"># total episode num</span></span><br><span class="line">Q = np.zeros([gsize[<span class="number">0</span>],gsize[<span class="number">1</span>],<span class="built_in">len</span>(acts)]) <span class="comment">#Q(St,At)</span></span><br><span class="line"></span><br><span class="line">isQLearning = <span class="literal">True</span></span><br><span class="line">isSARSA = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(Nepis):</span><br><span class="line">    s=s0 <span class="comment"># initial point</span></span><br><span class="line">    nstep =<span class="number">0</span> </span><br><span class="line">    tot_r = <span class="number">0</span> </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> gw[s[<span class="number">0</span>],s[<span class="number">1</span>]] != <span class="number">1</span>:</span><br><span class="line">        a = e_greedy(s,Q) <span class="comment">#action      </span></span><br><span class="line">        s_new = state_act(s,a,gsize) <span class="comment"># current state</span></span><br><span class="line">        <span class="keyword">if</span> isSARSA:</span><br><span class="line">            a_new = e_greedy(s_new,Q) <span class="comment"># use the same policy as current state</span></span><br><span class="line">        <span class="keyword">elif</span> isQLearning:</span><br><span class="line">            a_new = np.argmax(Q[s_new[<span class="number">0</span>]][s_new[<span class="number">1</span>]])</span><br><span class="line">        nstep = nstep + <span class="number">1</span> <span class="comment">#step</span></span><br><span class="line">        pred_err = reward(s,gw) + gamma*Q[s_new[<span class="number">0</span>],s_new[<span class="number">1</span>],a_new] - Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a]</span><br><span class="line">        tot_r = tot_r+reward(s,gw)</span><br><span class="line"></span><br><span class="line">        Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a] = Q[s[<span class="number">0</span>],s[<span class="number">1</span>],a] + A * pred_err</span><br><span class="line">        s = s_new</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> a==<span class="number">0</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">0</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向UP移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">elif</span> a==<span class="number">1</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">1</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向DOWN移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">elif</span> a==<span class="number">2</span>:</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">2</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向LEFT移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            Q_steps=np.around(Q[:,:,<span class="number">3</span>],<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;步，向RIGHT移动了:\n&quot;</span>.<span class="built_in">format</span>(nstep),Q_steps)</span><br><span class="line">            </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;第&#123;&#125;个Nepis,R值为：&#123;&#125;\n&quot;</span>.<span class="built_in">format</span>(k,tot_r),Q_steps)</span><br></pre></td></tr></table></figure>
 
-<p>训练200次后，基本确定了步数为选择最上面的保守路线</p>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#第199个Nepis,R值为：-13。</span></span><br><span class="line"> [[-<span class="number">13.6</span> -<span class="number">12.8</span> -<span class="number">11.7</span> -<span class="number">10.8</span>  -<span class="number">9.9</span>  -<span class="number">8.9</span>  -<span class="number">7.9</span>  -<span class="number">6.9</span>  -<span class="number">5.9</span>  -<span class="number">5.</span>   -<span class="number">4.</span>   -<span class="number">3.</span> ]</span><br><span class="line"> [-<span class="number">12.8</span> -<span class="number">12.</span>  -<span class="number">11.</span>  -<span class="number">10.</span>   -<span class="number">9.</span>   -<span class="number">8.</span>   -<span class="number">7.</span>   -<span class="number">6.</span>   -<span class="number">5.</span>   -<span class="number">4.</span>   -<span class="number">3.</span>   -<span class="number">2.</span> ]</span><br><span class="line"> [-<span class="number">13.9</span> -<span class="number">13.8</span> -<span class="number">13.2</span> -<span class="number">14.4</span> -<span class="number">14.4</span> -<span class="number">13.6</span> -<span class="number">13.6</span> -<span class="number">13.9</span> -<span class="number">13.5</span> -<span class="number">12.3</span> -<span class="number">13.7</span>  -<span class="number">1.</span> ]</span><br><span class="line"> [-<span class="number">13.5</span>   <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">0.</span> ]]</span><br></pre></td></tr></table></figure>
 </section>
     <!-- Tags START -->
     
@@ -284,20 +283,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2022/05/07/CartPole-v1%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91/">
+      <a class="nav-left" href="/2022/05/07/4%20On%20policy%20learning%20%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91%20%20SARSA/">
         <span class="nav-arrow">← </span>
         
-          CartPole-v1
+          On-policy learning
         
       </a>
     
-    
-      <a class="nav-right" href="/2022/05/08/5%20Off%20policy%20learning%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91/">
-        
-          Off-policy learning
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -349,7 +341,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%CF%B5-greedy"><span class="toc-nav-text">ϵ-greedy</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#On-policy-TD-Control"><span class="toc-nav-text">On-policy TD Control</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">代码实现</span></a>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Q-Learning%E7%AE%97%E6%B3%95"><span class="toc-nav-text">Q-Learning算法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">代码实现</span></a>
     
   </div>
 </aside>
@@ -359,7 +351,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2022/05/07/4 On policy learning 【RL强化学习】  SARSA/';
+    var url = 'http://example.com/2022/05/08/5 Off policy learning【RL强化学习】/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
