@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="zhaixuetan&#39;s blog">
+  <meta name="keyword" content="learning AI together">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      评估问题 | learning AI together
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>learning AI together</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>评估问题</h2>
+  <p class="post-date">2022-09-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><div class="alert alert-info"><p>一条新高速路：</p>
+<p>你每天希望尽快开车到家，原来的路需要60分钟，现在有一条新建的路，需要先从公司走一条比较窄的小路才能上高速，如何判断新路值不值得走</p>
+</div>
+
+<h3 id="转化为强化学习的问题"><a href="#转化为强化学习的问题" class="headerlink" title="转化为强化学习的问题"></a>转化为强化学习的问题</h3><p>State evaluation目标：走新路总时间比老路少</p>
+<p><em><strong>1. state(s)：</strong></em></p>
+<p>小路，高速路</p>
+<p><em><strong>2. reward(r)：</strong></em></p>
+<p>路上需要的时间（越少越好）</p>
+<p><em><strong>3. action(A)：</strong></em></p>
+<p>action:选择进入哪条路（这里只能选两段）</p>
+<p><em><strong>3. episode：</strong></em></p>
+<p>走一次的路程</p>
+<h3 id="数学表示"><a href="#数学表示" class="headerlink" title="数学表示"></a>数学表示</h3><p>已知：s1=小路， s2 = 高速路； r(s1),r(s2)<br>求：v(s1), v(s2)</p>
+<p>需要的实验数据：</p>
+<p>总时间？</p>
+<p>每段路的时间？</p>
+<p>–r(s_i)</p>
+<p>Model(free) 不需要模型的强化学习</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">相对于老路，同等路程节约的时间</span><br><span class="line">     R(小路)         R(高速路)</span><br><span class="line">周一    -<span class="number">5</span>             <span class="number">6</span></span><br><span class="line">周二    -<span class="number">8</span>             <span class="number">9</span></span><br><span class="line">周三    -<span class="number">2</span>             <span class="number">8</span></span><br><span class="line">周四    -<span class="number">3</span>             <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>主观的value(s)</p>
+<p>算法一： R = mean(R_k)</p>
+<p>算法二： 一步步往上爬。</p>
+<p>逐步更新： V_k+1 = V_k + α*（R_k+1 - V_k)</p>
+<p>注：k表示每个episode</p>
+<p>k=0时，实验比老路快0分钟，V_1=0预期 V_k=0</p>
+<p>k=1, 实验比老路快6分钟，V_1=6 , R1-V0=6, a=0.5, V_2=3，下一次预期3.</p>
+<p>k=2, 实验比老路快9分钟，V_2=9 , R2-V1=6, a=0.5, V_3=6，下一次预期6.</p>
+<p>k=3, 实验比老路快8分钟，V_3=8 , R3-V2=2, a=0.5, V_3=7，下一次预期7.</p>
+<p>k=4, 实验比老路快2分钟，V_2=2 , R2-V1=-5, a=0.5, V_3=4.5，下一次预期4.5.<br>.<br>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">相对于老路，同等路程节约的时间</span><br><span class="line">        V_k         R_k+<span class="number">1</span> - V_k    V_k+<span class="number">1</span></span><br><span class="line">预测     <span class="number">0</span>                           <span class="number">0</span></span><br><span class="line">周一     <span class="number">6</span>             <span class="number">6</span>            <span class="number">3</span></span><br><span class="line">周二     <span class="number">9</span>             <span class="number">6</span>            <span class="number">6</span></span><br><span class="line">周三     <span class="number">8</span>             <span class="number">2</span>            <span class="number">7</span></span><br><span class="line">周四     <span class="number">2</span>             -<span class="number">5</span>           <span class="number">4.5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="两种算法的比较"><a href="#两种算法的比较" class="headerlink" title="两种算法的比较"></a>两种算法的比较</h3><p>features of delta rule</p>
+<p>1.learning rate is arbitray </p>
+<ol start="2">
+<li><p>delta rule更重视新经验</p>
+</li>
+<li><p>delta relu只存储一个变量 V_k+1</p>
+</li>
+</ol>
+<h3 id="面向未来"><a href="#面向未来" class="headerlink" title="面向未来"></a>面向未来</h3><p>主观的value(s)</p>
+<p>算法三：面向未来</p>
+<p>V_k+1 = V_k + α*Δ </p>
+<p>Δ = [R(s) + γV(s’)] - V(s) # s’下一个state</p>
+<p>注：k表示每个episode    / γ=1   /   α = 1</p>
+<p>k=0时，走小路0分钟，走高速路0分钟，Δ= 0 V_1=0 预 期 V（小路）=0 ，v(高速路)=0</p>
+<p>k=1, 走小路实际比之前慢-5，R(s)=-5,V(s’)=0,V(s)=0，Δ=-5, V_2 =-5，期望下次走小路是-5. 高速路没有下一个状态，Δ= R(s)-V(S)=6,V_2=6，也就是下次预期为6.</p>
+<p>k=2, 走小路实际比之前慢-8，R(s)=-8,V(s’)=6,V(s)=-5，Δ=-7, V_3 =-12，期望下次走小路是-12. 高速路没有下一个状态，Δ= R(s)-V(S)=9-6,V_3=3，也就是下次预期为3.</p>
+<p>k=3, 走小路实际比之前慢-2，R(s)=-2,V(s’)=3,V(s)=-12，Δ=-11, V_4 =-23，期望下次走小路是-23. 高速路没有下一个状态，Δ= R(s)-V(S)=8-3,V_4=5，也就是下次预期为5.</p>
+<p>k=4, 走小路实际比之前慢-3，R(s)=-3,V(s’)=5,V(s)=-23，Δ=-21, V_5 =-44，小路是-44. 高速路没有下一个状态，Δ= R(s)-V(S)=2-5,V_5=-3，也就是预期为-3.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">相对于老路，同等路程节约的时间</span><br><span class="line">        R(小路)       R(高速路)   V(小路)    V(高速路)</span><br><span class="line">预测                                <span class="number">0</span>         <span class="number">0</span></span><br><span class="line">周一     -<span class="number">5</span>            <span class="number">6</span>            -<span class="number">5</span>        <span class="number">6</span></span><br><span class="line">周二     -<span class="number">8</span>            <span class="number">6</span>            -<span class="number">12</span>       <span class="number">3</span></span><br><span class="line">周三     -<span class="number">2</span>            <span class="number">8</span>            -<span class="number">23</span>       <span class="number">5</span></span><br><span class="line">周四     -<span class="number">3</span>            <span class="number">2</span>            -<span class="number">44</span>      -<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="TD-learning-temporal-difference-learning"><a href="#TD-learning-temporal-difference-learning" class="headerlink" title="TD　learning(temporal-difference learning)"></a>TD　learning(temporal-difference learning)</h3><p>时间差分预测</p>
+<p>V(St) = V(St) + α[Rt+1 + γV(St+1) - V(St)]</p>
+<p>注：Rt+1 + γV(St+1)被称作TD target项，Rt+1 + γV(St+1) - V(St)被称作TD error项。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># problem set-up #客观环境</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">next_s</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">if</span> s==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span> <span class="comment">#terminal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reward</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">if</span> s==<span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> np.random.normal(-<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">elif</span> s == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> np.random.normal(<span class="number">5</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># learning set-up #主观设置</span></span><br><span class="line">A = <span class="number">.5</span> <span class="comment"># learning rate</span></span><br><span class="line">gamma =<span class="number">1</span> <span class="comment"># no temporal discount</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">V = np.zeros(<span class="number">2</span>) <span class="comment"># initialize to 0</span></span><br><span class="line"></span><br><span class="line">Nepis = <span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(Nepis):</span><br><span class="line">    s=<span class="number">0</span> </span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> s !=-<span class="number">1</span>:</span><br><span class="line">        s_new = next_s(s)</span><br><span class="line">        pred_err = reward(s) + gamma * V[s_new] -V[s]</span><br><span class="line">        V[s] = V[s] +A * pred_err</span><br><span class="line">        s = s_new</span><br><span class="line">    <span class="built_in">print</span>(V)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[-0.42162329  2.10378408]
+[-0.87091793  4.43746472]
+[0.28692157 6.39314193]
+[1.54135436 8.42799535]
+[ 4.2044904  10.89704813]
+[ 6.51560519 13.1345473 ]
+[ 8.36096536 16.35348595]
+[10.67874611 18.51504203]
+[13.31509973 20.74217751]
+[15.92313128 22.25555239]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Keras深度学习" >
+    <span class="tag-code">Keras深度学习</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/09/18/1-%E7%BB%8F%E5%85%B8%E6%9D%A1%E4%BB%B6%E5%8F%8D%E5%B0%84%20%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91/">
+        <span class="nav-arrow">← </span>
+        
+          经典条件反射 【RL强化学习】
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/09/18/3-%20Policy%20Learning%E3%80%90RL%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%91/">
+        
+          TD learning
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-nav-text">转化为强化学习的问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E5%AD%A6%E8%A1%A8%E7%A4%BA"><span class="toc-nav-text">数学表示</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%A4%E7%A7%8D%E7%AE%97%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-nav-text">两种算法的比较</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%9D%A2%E5%90%91%E6%9C%AA%E6%9D%A5"><span class="toc-nav-text">面向未来</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TD-learning-temporal-difference-learning"><span class="toc-nav-text">TD　learning(temporal-difference learning)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">代码实现</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/09/18/2-Evaluation problem【RL强化学习】一条路问题/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/learningaitogether">learningaitogether</a>
+    
+  </p>
+
+
+<p class = "busuanzi">
+
+  
+    <!-- 不蒜子统计 -->
+    <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+            本站访客数<span id="busuanzi_value_site_uv"></span>人
+    </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</p>
+
+
+  
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="zhaixuetan&#39;s blog">
+  <meta name="keyword" content="learning AI together">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ANN | MLP多层感知器 | 手写数字识别 | learning AI together
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>learning AI together</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ANN | MLP多层感知器 | 手写数字识别</h2>
+  <p class="post-date">2022-09-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> layers</span><br><span class="line"><span class="keyword">from</span> keras.datasets <span class="keyword">import</span> mnist <span class="comment"># keras库中带得数据集。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>1. 准备数据：X, y</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#加载数据集</span></span><br><span class="line">(X_train,y_train),(X_test,y_test) = mnist.load_data()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_train.shape,y_train.shape,X_test.shape,y_test.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>((60000, 28, 28), (60000,), (10000, 28, 28), (10000,))
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看原始数据</span></span><br><span class="line">plt.imshow(X_train[<span class="number">0</span>])</span><br><span class="line">y_train[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>5
+</code></pre>
+<p><img src="output_5_1.png" alt="png"></p>
+<p>Step1准备数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.1处理图片 / 归一化处理</span></span><br><span class="line">X_train_shape = X_train.reshape(<span class="number">60000</span>,<span class="number">28</span>*<span class="number">28</span>)/<span class="number">255</span></span><br><span class="line">X_test_shape = X_test.reshape(<span class="number">10000</span>,<span class="number">28</span>*<span class="number">28</span>)/<span class="number">255</span></span><br><span class="line">X_train_shape.shape <span class="comment"># 查看X的形状</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(60000, 784)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1.2处理结果[0-9] 类别向量 | one-hot编码</span></span><br><span class="line"><span class="keyword">from</span> keras.utils.np_utils <span class="keyword">import</span> to_categorical</span><br><span class="line">y_train_cat = to_categorical(y_train)</span><br><span class="line">y_test_cat = to_categorical(y_test)</span><br><span class="line">y_train_cat[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([1., 0., 0., 0., 0., 0., 0., 0., 0., 0.], dtype=float32)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_train_shape.shape,y_train_cat.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>((60000, 784), (60000, 10))
+</code></pre>
+<p><strong>2. 构建网络模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model=keras.Sequential()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.add(layers.Dense(<span class="number">128</span>,input_dim=<span class="number">784</span>,activation=<span class="string">&#x27;relu&#x27;</span>)) <span class="comment">#输入层</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.add(layers.Dense(<span class="number">64</span>,activation=<span class="string">&#x27;relu&#x27;</span>)) <span class="comment">#隐藏层</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.add(layers.Dense(<span class="number">10</span>,activation=<span class="string">&#x27;softmax&#x27;</span>)) <span class="comment">#输 出层</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+
+<pre><code>Model: &quot;sequential_2&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_5 (Dense)             (None, 128)               100480    
+                                                                 
+ dense_6 (Dense)             (None, 64)                8256      
+                                                                 
+ dense_7 (Dense)             (None, 10)                650       
+                                                                 
+=================================================================
+Total params: 109,386
+Trainable params: 109,386
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">#二分类 输出层的激活函数 sigmoid - loss: binary_crossentropy  </span></span><br><span class="line"><span class="comment"># 多分类  输出的激活函数 softmax  - loss: categorical_crossentory</span></span><br><span class="line"><span class="comment"># to_caget... #</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 编译模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;Adam&#x27;</span>,loss=<span class="string">&#x27;categorical_crossentropy&#x27;</span>,metrics=[<span class="string">&#x27;acc&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 训练模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history = model.fit(X_train_shape,y_train_cat,epochs=<span class="number">10</span>,validation_data=(X_test_shape,y_test_cat))</span><br></pre></td></tr></table></figure>
+
+<pre><code>Epoch 1/10
+1875/1875 [==============================] - 14s 7ms/step - loss: 0.2399 - acc: 0.9307 - val_loss: 0.1117 - val_acc: 0.9628
+Epoch 2/10
+1875/1875 [==============================] - 16s 9ms/step - loss: 0.0991 - acc: 0.9694 - val_loss: 0.1036 - val_acc: 0.9685
+Epoch 3/10
+1875/1875 [==============================] - 20s 11ms/step - loss: 0.0697 - acc: 0.9777 - val_loss: 0.0816 - val_acc: 0.9741
+Epoch 4/10
+1875/1875 [==============================] - 20s 11ms/step - loss: 0.0515 - acc: 0.9840 - val_loss: 0.0815 - val_acc: 0.9755
+Epoch 5/10
+1875/1875 [==============================] - 20s 11ms/step - loss: 0.0414 - acc: 0.9865 - val_loss: 0.0821 - val_acc: 0.9764
+Epoch 6/10
+1875/1875 [==============================] - 12s 7ms/step - loss: 0.0366 - acc: 0.9881 - val_loss: 0.0748 - val_acc: 0.9797
+Epoch 7/10
+1875/1875 [==============================] - 11s 6ms/step - loss: 0.0265 - acc: 0.9911 - val_loss: 0.0828 - val_acc: 0.9771
+Epoch 8/10
+1875/1875 [==============================] - 11s 6ms/step - loss: 0.0218 - acc: 0.9929 - val_loss: 0.0978 - val_acc: 0.9750
+Epoch 9/10
+1875/1875 [==============================] - 15s 8ms/step - loss: 0.0230 - acc: 0.9925 - val_loss: 0.0801 - val_acc: 0.9793
+Epoch 10/10
+1875/1875 [==============================] - 15s 8ms/step - loss: 0.0187 - acc: 0.9939 - val_loss: 0.0981 - val_acc: 0.9777
+</code></pre>
+<p><strong>4. 评估模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loss,acc = model.evaluate(X_train_shape,y_train_cat)</span><br></pre></td></tr></table></figure>
+
+<pre><code>1875/1875 [==============================] - 8s 4ms/step - loss: 0.0149 - acc: 0.9949
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loss,acc = model.evaluate(X_test_shape,y_test_cat)</span><br></pre></td></tr></table></figure>
+
+<pre><code>313/313 [==============================] - 1s 4ms/step - loss: 0.0981 - acc: 0.9777
+</code></pre>
+<p><strong>5. 预测模型：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pred=model.predict(X_test_shape)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pred.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(10000, 10)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pred[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>array([2.6841791e-11, 3.1484275e-12, 2.0740840e-09, 3.1667929e-07,
+       2.0627146e-12, 2.2692452e-09, 1.0325417e-16, 9.9999952e-01,
+       1.6174454e-11, 6.6967488e-08], dtype=float32)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.argmax(pred[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>2
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#原始图片</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(X_test[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;matplotlib.image.AxesImage at 0x1c040a730d0&gt;
+</code></pre>
+<p><img src="output_30_1.png" alt="png"></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Keras深度学习" >
+    <span class="tag-code">Keras深度学习</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/09/18/%E3%80%90keras%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%91ANN%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
+        <span class="nav-arrow">← </span>
+        
+          ANN | 非线性回归
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/09/18/%E3%80%90keras%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%91CNN%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CIFAR-10/">
+        
+          CNN 图像识别 CIFAR-10
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/09/18/【keras深度学习】MLP多层感知器 mnist/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/learningaitogether">learningaitogether</a>
+    
+  </p>
+
+
+<p class = "busuanzi">
+
+  
+    <!-- 不蒜子统计 -->
+    <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+            本站访客数<span id="busuanzi_value_site_uv"></span>人
+    </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</p>
+
+
+  
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </body>
+</html>
